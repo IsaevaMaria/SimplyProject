@@ -1,5 +1,6 @@
 import os
 import api
+from data.models.users import *
 from data.forms import *
 from data import db_session
 from data.__all_models import *
@@ -44,13 +45,14 @@ def registration():
             return render_template("registration.html", form=form, message="Заполните все поля")
         if form.password.data != form.confirm_password.data:
             return render_template("registration.html", form=form, message="Пароли не совпадают.")
-        new_user = users.Users()
+
+        new_user = Users()
         new_user.name = form.nickname.data
         new_user.set_password(form.password.data)
         new_user.email = form.login.data
         session.add(new_user)
         session.commit()
-        login_user(new_user)
+        #login_user(new_user)
         return redirect("/")
     return render_template("registration.html", form=form, message="")
 
@@ -163,4 +165,4 @@ if __name__ == "__main__":
     session = db_session.create_session()
     app.register_blueprint(api.api)
     #  app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-    app.run(host="127.0.0.1", port=8080)
+    app.run(host="127.0.0.1", port=8000)

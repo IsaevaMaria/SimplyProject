@@ -1,0 +1,1 @@
+from data.models import chats, chats_invitations, chats_messages, friends, friends_invitations, friends_messages, messages, users
