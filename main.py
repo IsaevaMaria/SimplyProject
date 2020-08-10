@@ -160,9 +160,25 @@ def accept_friend(invitation_id):
     return redirect(past)
 
 
+
+#################################
+@app.route("/chats")
+@login_required
+def user_chats():
+    return render_template("chats.html", chats=current_user.chats)
+
+@app.route("/chat/<int:chat_id>", methods=["POST", "GET"])
+@login_required
+def user_chat(chat_id):
+    session = db_session.create_session()
+    chat = session.query(chats.Chats).get(chat_id)
+    return render_template("user_chat.html", chat=chat, members=[(user.id, user.name) for user in chat.users])
+
+
+
 if __name__ == "__main__":
     db_session.global_init("db/database.sqlite")
     session = db_session.create_session()
     app.register_blueprint(api.api)
     #  app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-    app.run(host="127.0.0.1", port=8000)
+    app.run(host="127.0.0.1", port=8080)
